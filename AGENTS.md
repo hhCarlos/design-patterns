@@ -10,6 +10,10 @@ Before modifying, creating, moving, or deleting any project file:
 4. If the current branch is `main` or `develop`, create a task-specific branch before making changes.
 5. If unrelated uncommitted changes exist, stop and report them instead of modifying the working tree.
 
+## Ensure structure
+1. Invoke and follow the `design-patterns-structure` skill.
+2. If everything it's ok, we can continue working.
+
 ## Verification
 
 - Run `./mvnw test` after modifying Java code, tests, or `pom.xml`.
