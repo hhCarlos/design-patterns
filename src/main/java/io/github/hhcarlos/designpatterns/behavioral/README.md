@@ -1,5 +1,7 @@
 # Behavioral Patterns
 
+## Intent
+
 Behavioral patterns define how objects communicate, collaborate, and distribute responsibilities.
 They organize algorithms, control flow, state transitions, requests, and reactions between objects.
 Most object-scoped behavioral patterns prefer composition and delegation, while class-scoped patterns use inheritance
