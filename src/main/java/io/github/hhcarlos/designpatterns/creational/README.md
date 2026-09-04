@@ -58,7 +58,79 @@ remain inside the code that consumes the object.
 
 ## Relationship with SOLID
 
+Creational patterns often support SOLID by separating object construction from the behavior 
+that uses the created objects.
+
+They allow creation rules to change independently and help clients depend on stable contracts rather than concrete
+constructors.
+
+However, using a creational pattern does not automatically make a design SOLID. The pattern must preserve clear
+responsibilities, explicit dependencies, and valid behavioral contracts.
+
+* Single Responsibility Principle (SRP):
+  A client should focus on its application behavior instead of also coordinating complex object construction.
+  Factories and builders can move creation logic into components whose primary responsibility is assembling objects.
+  This separation is lost when one large factory becomes responsible for constructing unrelated objects throughout
+  the entire application.
+
+* Open/Closed Principle (OCP):
+  Clients can remain unchanged when new concrete implementations are introduced behind an existing product or factory
+  abstraction. Factory Method can support extension through new creator subclasses, while Abstract Factory allows
+  complete product families to be replaced. This benefit depends on the type of variation: adding an entirely new
+  product category may still require existing factory interfaces to change.
+
+* Liskov Substitution Principle (LSP):
+  Concrete products returned by a factory must respect the behavior promised by their shared abstraction. Clients
+  should be able to use any returned implementation without checking its concrete type or changing their workflow.
+  Creator subclasses must also preserve the creation contract established by their base class.
+
+* Interface Segregation Principle (ISP):
+  Factory and builder interfaces should expose only the creation operations required by their clients. Clients should
+  not be forced to depend on methods for unrelated products or optional construction steps they never use. Large
+  abstract factories may need to be divided when different clients require independent parts of a product family.
+
+* Dependency Inversion Principle (DIP):
+  High-level application logic can depend on product and factory abstractions instead of concrete classes. Concrete
+  factories, builders, or implementations can then be provided through dependency injection or configuration.
+  Creational patterns violate this principle when they hide dependencies behind global access, static service
+  locators, or uncontrolled Singleton state.
+
+Creational patterns therefore support SOLID when they make construction a clear and replaceable responsibility.
+
+They should expose dependencies rather than hide them and must always return objects that satisfy the contracts
+expected by their clients.
+
 ## Included Patterns
+
+The GoF creational family contains five patterns:
+
+* Factory Method — Class Scope:
+  Defines a creation operation in a base creator and allows subclasses to decide which concrete product is
+  instantiated. Use it when object creation should vary through inheritance while the general workflow remains
+  defined by the parent class.
+
+* Abstract Factory — Object Scope:
+  Provides an interface for creating families of related or compatible objects without exposing their concrete
+  classes. Use it when an application must switch complete product families while preventing incompatible products
+  from being combined.
+
+* Builder — Object Scope:
+  Separates the step-by-step construction of a complex object from its final representation. Use it when construction
+  includes ordered steps, optional values, validation rules, or multiple representations produced through a similar
+  process.
+
+* Prototype — Object Scope:
+  Creates new objects by copying an existing configured instance. Use it when initialization is expensive, when many
+  similar objects are required, or when their concrete types should not be coupled to the client performing the copy.
+
+* Singleton — Object Scope:
+  Controls the creation of a class so that only one instance exists and provides a shared access point to it. Use it
+  only when single-instance ownership is a genuine domain or infrastructure requirement, not merely as convenient
+  global state.
+
+The appropriate pattern depends on what varies in the construction process: subclasses select products with Factory
+Method, factories provide compatible families with Abstract Factory, builders coordinate construction steps,
+prototypes copy configured objects, and Singleton controls instance count.
 
 ## When This Family Is Useful
 
