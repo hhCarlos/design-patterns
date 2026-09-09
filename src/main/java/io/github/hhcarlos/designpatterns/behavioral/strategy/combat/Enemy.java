@@ -1,4 +1,4 @@
-package io.github.hhcarlos.designpatterns.behavioral.strategy;
+package io.github.hhcarlos.designpatterns.behavioral.strategy.combat;
 
 public class Enemy {
     private final String name;

@@ -1,28 +1,15 @@
 package io.github.hhcarlos.designpatterns.behavioral.strategy;
 
+import io.github.hhcarlos.designpatterns.behavioral.strategy.combat.*;
+import io.github.hhcarlos.designpatterns.behavioral.strategy.order.OrderExample;
+
 public final class Main {
-    private Main() {
-    }
 
     public static void main(String[] args) {
         System.out.println("Working with the Strategy pattern.");
 
-        CombatStrategy aggressiveStrategy = new AggressiveCombatStrategy();
+        // CombatExample.run();
 
-        Enemy enemy = new Enemy(
-                "Marrano infernal",
-                aggressiveStrategy
-        );
-
-        enemy.attack(40);
-        enemy.defend(40);
-
-        Enemy enemy1 = new Enemy(
-                "Molis Crayolis",
-                new SlowCombatStrategy()
-        );
-
-        enemy1.attack(1000);
-        enemy1.defend(4000);
+        OrderExample.run();
     }
 }
