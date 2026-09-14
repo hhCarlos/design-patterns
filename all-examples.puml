@@ -1,0 +1,141 @@
+/'
+@startuml
+class Request
+
+abstract class Handler {
+    # nextHandler: Handler
+    + setNext(handler: Handler): Handler
+    + handle(request: Request)
+}
+
+class ConcreteHandler1 {
+    + handle(request: Request)
+}
+
+class ConcreteHandler2 {
+    + handle(request: Request)
+}
+
+class Client
+
+Handler <|-- ConcreteHandler1
+Handler <|-- ConcreteHandler2
+
+Handler o--> Handler : nextHandler
+
+Client --> Handler : sends request
+Handler ..> Request : handles
+@enduml
+'/
+
+/' Strategy Pattern '/
+/'
+@startuml
+class Context {
+  - strategy: Strategy
+
+  + Context(strategy: Strategy)
+  + setStrategy(strategy: Strategy)
+  + executeStrategy()
+}
+
+interface Strategy {
+  + execute()
+}
+
+class ConcreteStrategyA {
+  + execute()
+}
+
+class ConcreteStrategyB {
+  + execute()
+}
+
+class ConcreteStrategyC {
+  + execute()
+}
+
+Context o--> Strategy : contains
+
+Strategy <|.. ConcreteStrategyA
+Strategy <|.. ConcreteStrategyB
+Strategy <|.. ConcreteStrategyC
+@enduml
+'/
+
+
+/'
+@startuml
+class Enemy {
+  - name: String
+  - strategy: CombatStrategy
+
+  + Enemy(name: String, strategy: CombatStrategy)
+  + attack()
+  + defense()
+  + setStrategy(strategy: CombatStrategy)
+}
+
+interface CombatStrategy {
+  + attack()
+  + defense()
+}
+
+class DemonOneStrategy {
+  + attack()
+  + defense()
+}
+
+class DemonTwoStrategy {
+  + attack()
+  + defense()
+}
+
+class DemonThreeStrategy {
+  + attack()
+  + defense()
+}
+
+Enemy o--> CombatStrategy : delegates
+
+CombatStrategy <|.. DemonOneStrategy
+CombatStrategy <|.. DemonTwoStrategy
+CombatStrategy <|.. DemonThreeStrategy
+@enduml
+'/
+
+/'
+@startuml
+class Order {
+    - orderTotal: BigDecimal
+    - shippingStrategy: ShippingStrategy
+
+    + Order(orderTotal: BigDecimal, shippingStrategy: ShippingStrategy)
+
+    + calculateShippingCost(): BigDecimal
+    + setShippingStrategy(ShippingStrategy newStrategy): void
+}
+
+interface ShippingStrategy {
+    + calculateShippingCost(BigDecimal orderTotal): BigDecimal
+}
+
+Order o--> ShippingStrategy : delegates
+
+class StandardShippingStrategy {
+    + calculateShippingCost(orderTotal: BigDecimal): BigDecimal
+}
+
+class ExpressShippingStrategy {
+    + calculateShippingCost(orderTotal: BigDecimal): BigDecimal
+}
+
+class StorePickupStrategy {
+    + calculateShippingCost(orderTotal: BigDecimal): BigDecimal
+}
+
+ShippingStrategy <|.. StandardShippingStrategy
+ShippingStrategy <|.. ExpressShippingStrategy
+ShippingStrategy <|.. StorePickupStrategy
+@enduml
+'/
