@@ -1,67 +1,60 @@
-# Adapter Pattern
+# Chain of Responsibility Pattern
 
 ## Intent
 
-Adapter converts the interface of an existing class into another interface that the client expects.
+Chain of Responsibility passes a request through a sequence of potential handlers until one of them processes it or the end of the chain is reached.
 
-This allows classes with incompatible interfaces to collaborate without modifying the client or the existing implementation.
+This allows the sender to issue a request without knowing which object will handle it and enables the processing chain to be assembled or modified independently.
 
 ## Problem
 
-A client may need to use an existing class, external library, legacy component, or third-party service whose interface 
-does not match the contract expected by the application.
+A request may need to be processed by different objects depending on its data, state, or business rules.
 
-Making the client communicate directly with the incompatible component couples it to implementation-specific methods, 
-data formats, and behaviors. As new integrations are introduced, translation logic becomes duplicated and the client becomes 
-harder to modify, test, and maintain.
+Making the sender select a specific handler couples it to every available implementation. 
+As new handlers are introduced, the sender becomes harder to modify, test, and maintain.
 
 This problem commonly appears through:
 
-* Third-party libraries exposing interfaces that differ from the application's contract.
-* Legacy classes that cannot be safely modified.
-* External services using different method names, parameters, or response formats.
-* Conversion logic duplicated across different clients.
-* Large `if`, `else`, or `switch` blocks that handle implementation-specific behavior.
-* Clients that depend directly on multiple incompatible implementations.
+* Large `if`, `else`, or `switch` blocks that select a handler.
+* A sender that depends directly on multiple concrete handlers.
+* Processing rules that must execute in a specific sequence.
+* New handlers requiring changes to stable existing code.
+* Business rules duplicated across different request flows.
 
 ## Solution
 
-Adapter introduces a class that implements the interface expected by the client and maintains a reference to the incompatible object.
+Chain of Responsibility extracts each processing rule into a separate handler and defines a common contract that every handler must implement.
 
-When the adapter receives a request, it translates the request into a format understood by the existing object, 
-delegates the operation, and optionally converts the result back into the format expected by the client.
+Each handler maintains a reference to the next handler in the chain. 
+When it receives a request, it decides whether to process it, forward it to the next handler, or perform both actions.
 
-The client communicates only through the target interface and remains unaware of the adapter and the adapted implementation.
-
-Because every adapter respects the same target contract, incompatible implementations can be introduced, replaced, or removed 
-without modifying the client.
+The client assembles the chain and sends the request to its first handler. 
+Because every handler respects the same contract, handlers can be added, removed, reordered, or replaced without modifying the sender.
 
 ## Structure
 
-![Adapter pattern class diagram](./UML.png)
+![Chain of Responsibility pattern class diagram](./UML.png)
 
-* **Client:** Collaborates with objects through the target interface.
-* **Target:** Defines the contract expected by the client.
-* **Adapter:** Implements the target interface and translates requests between the client and the adaptee.
-* **Adaptee:** Provides useful behavior through an existing but incompatible interface.
+* **Handler:** Defines the common contract for processing requests and referencing the next handler.
+* **Concrete Handler:** Processes requests it is responsible for and forwards other requests through the chain.
+* **Client:** Assembles the chain and sends requests to its first handler.
+* **Request:** Contains the information that handlers inspect or process.
 
 ## Consequences
 
 ### Benefits
 
-* Existing or third-party code can be reused without modification.
-* The client remains independent of implementation-specific interfaces.
-* Translation logic is isolated in a dedicated class.
-* New adaptees can be integrated by introducing new adapters.
-* Existing clients do not need to change when integrations are replaced.
-* Adapters can be tested independently from the client.
-* The pattern supports the Single Responsibility and Open/Closed principles.
+* The sender does not depend on a specific receiver.
+* Handlers evolve independently from the client.
+* The chain can be modified or reordered at runtime.
+* New handlers can be introduced without modifying existing ones.
+* Complex conditional selection logic is removed from the sender.
+* Each handler can be tested independently.
 
 ### Trade-offs
 
-* Additional classes and abstractions increase the size of the design.
-* Complex translations may make an adapter difficult to understand or maintain.
-* Differences between the target and adaptee may not always map cleanly.
-* Changes to the adaptee's interface may require changes to its adapter.
-* Poorly designed adapters may expose implementation details and create a leaky abstraction.
-* The pattern may introduce unnecessary complexity when the interface difference is small.
+* A request may reach the end of the chain without being handled.
+* Processing behavior can be harder to trace across multiple handlers.
+* The order of handlers may affect the final result.
+* Long chains may introduce unnecessary processing overhead.
+* Shared request data and forwarding rules require a well-designed contract.
