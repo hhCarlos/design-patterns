@@ -8,9 +8,11 @@ This allows classes with incompatible interfaces to collaborate without modifyin
 
 ## Problem
 
-A client may need to use an existing class, external library, legacy component, or third-party service whose interface does not match the contract expected by the application.
+A client may need to use an existing class, external library, legacy component, or third-party service whose 
+interface does not match the contract expected by the application.
 
-Making the client communicate directly with the incompatible component couples it to implementation-specific methods, data formats, and behaviors. As new integrations are introduced, translation logic becomes duplicated and the client becomes harder to modify, test, and maintain.
+Making the client communicate directly with the incompatible component couples it to implementation-specific methods, data formats, and behaviors.
+As new integrations are introduced, translation logic becomes duplicated and the client becomes harder to modify, test, and maintain.
 
 This problem commonly appears through:
 
@@ -25,7 +27,8 @@ This problem commonly appears through:
 
 Adapter introduces a class that implements the interface expected by the client and maintains a reference to the incompatible object.
 
-When the adapter receives a request, it translates the request into a format understood by the existing object, delegates the operation, and optionally converts the result back into the format expected by the client.
+When the adapter receives a request, it translates the request into a format understood by the existing object, delegates the operation, 
+and optionally converts the result back into the format expected by the client.
 
 The client communicates only through the target interface and remains unaware of the adapter and the adapted implementation.
 
